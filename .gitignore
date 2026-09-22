@@ -1,0 +1,49 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Local secrets and generated application data
+.env
+credentials.json
+token.json
+data/*.db
+data/streamlit_search_report.json
+data/application_attachments/
+data/chrome-emploi-profile/
+data/web_workflows/
+data/*.db-shm
+data/*.db-wal
+data/tailored_cv.*
+data/*.aux
+data/*.log
+data/*.out
+frontend/node_modules/
+frontend/.next/
+frontend/*.tsbuildinfo
+frontend/playwright-report/
+frontend/test-results/
+frontend/.env.local
+data/web-*.log
+
+# Tests are intentionally excluded from this GitHub export
+tests/
+frontend/tests/
+frontend/playwright.config.ts
+scripts/test_*.py
+scripts/check_streamlit_search.py
+frontend/AGENTS.md
+frontend/CLAUDE.md
+
+# Local tooling and editor state
+.uv-cache/
+.uv-python/
+.vscode/
+.idea/
+.DS_Store

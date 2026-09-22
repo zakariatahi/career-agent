@@ -1,0 +1,13 @@
+"use client";
+import { useEffect, useState } from "react";
+import { api, post, dateLabel, type Application } from "@/lib/api";
+import { Button } from "@/components/ui/button";
+import { ErrorNotice } from "@/components/shared";
+
+type PendingReply = {message_id:string;job_url:string|null;sender:string;subject:string;response_text:string;snippet:string;received_at:string};
+export function InboxReview({apps,onUpdated}: {apps:Application[];onUpdated:()=>Promise<void>}) {
+  const [replies,setReplies]=useState<PendingReply[]>([]);const [selection,setSelection]=useState<Record<string,string>>({});const [error,setError]=useState("");const [busy,setBusy]=useState(false);
+  useEffect(()=>{api<PendingReply[]>("/inbox/review").then(rows=>setReplies(rows.filter(row=>!row.job_url))).catch(e=>setError(e.message));},[apps]);
+  if(!replies.length && !error)return null;
+  return <details className="mt-6 rounded-xl border bg-muted/30 p-5"><summary className="cursor-pointer text-sm font-medium">Replies to match <span className="ml-2 text-xs text-muted-foreground">{replies.length}</span></summary><p className="mb-5 mt-2 text-xs leading-6 text-muted-foreground">These replies could not be matched confidently. Choose the application and the recruiter’s response.</p><ErrorNotice message={error}/>{replies.map(reply=><div key={reply.message_id} className="mb-4 rounded-lg border bg-white p-4"><p className="text-xs font-medium">{reply.subject}</p><p className="mt-1 text-[11px] text-muted-foreground">{reply.sender} · {dateLabel(reply.received_at)}</p><p className="my-4 max-h-56 overflow-y-auto whitespace-pre-wrap text-sm leading-7">{reply.response_text || reply.snippet}</p><div className="flex flex-wrap gap-2"><select aria-label={`Application for ${reply.subject}`} value={selection[reply.message_id] || ""} className="max-w-full" onChange={e=>setSelection({...selection,[reply.message_id]:e.target.value})}><option value="">Choose a submitted application</option>{apps.map(app=><option key={app.id} value={app.id}>{app.title} · {app.company}</option>)}</select>{["interview","rejected"].map(status=><Button key={status} size="sm" variant="outline" disabled={busy || !selection[reply.message_id]} onClick={async()=>{setBusy(true);setError("");try{await post(`/inbox/${reply.message_id}/classify`,{application_id:Number(selection[reply.message_id]),status});setReplies(replies.filter(item=>item.message_id!==reply.message_id));await onUpdated();}catch(e){setError((e as Error).message);}finally{setBusy(false);}}}>{status === "interview" ? "Accepted for interview" : "Rejected"}</Button>)}</div></div>)}</details>;
+}
