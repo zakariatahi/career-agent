@@ -3,6 +3,10 @@
 These screenshots use synthetic demonstration data. They do not contain real
 candidate information, credentials, applications, or recruiter messages.
 
+## End-to-end pipeline
+
+![CareerAI end-to-end application pipeline](docs/images/pipeline.png)
+
 ## Search workflow
 
 ![CareerAI job-search workflow](docs/images/workflow.png)

@@ -2,6 +2,10 @@
 
 [View screenshots of the application](APP_PREVIEW.md)
 
+## End-to-end pipeline
+
+![CareerAI end-to-end application pipeline](docs/images/pipeline.png)
+
 ## Before you start
 
 This repository contains no credentials or personal application data. Copy
