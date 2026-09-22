@@ -1,5 +1,7 @@
 # Career Agent
 
+[View screenshots of the application](APP_PREVIEW.md)
+
 ## Before you start
 
 This repository contains no credentials or personal application data. Copy
